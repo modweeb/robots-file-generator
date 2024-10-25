@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد ملف Robots.txt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            direction: rtl;
+            text-align: right;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #003366;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #003366;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #002244;
+        }
+
+        textarea {
+            margin-top: 20px;
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .auto-generate {
+            background-color: #28a745;
+        }
+
+        .auto-generate:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>مولد ملف Robots.txt</h1>
+    <form id="robotsForm">
+        <label for="siteUrl">عنوان الموقع:</label>
+        <input id="siteUrl" name="siteUrl" type="text" value="https://www.modweeb.com" />
+
+        <label for="userAgent">وكيل المستخدم:</label>
+        <input id="userAgent" name="userAgent" placeholder="*" type="text" />
+
+        <label for="disallow">منع:</label>
+        <input id="disallow" name="disallow" placeholder="/المسار" type="text" />
+
+        <label for="allow">سماح (اختياري):</label>
+        <input id="allow" name="allow" placeholder="/المسار" type="text" />
+
+        <label for="sitemap">خريطة الموقع (اختياري):</label>
+        <input id="sitemap" name="sitemap" placeholder="http://example.com/sitemap.xml" type="text" />
+
+        <button onclick="generateRobotsTxt()" type="button">توليد</button>
+        <button class="auto-generate" onclick="autoGenerate()" type="button">توليد تلقائي</button>
+    </form>
+
+    <textarea id="robotsOutput" readonly placeholder="سيظهر كود ملف Robots.txt هنا"></textarea>
+    <button onclick="copyToClipboard()">نسخ إلى الحافظة</button>
+</div>
+
+<script>
+    function generateRobotsTxt() {
+        const siteUrl = document.getElementById('siteUrl').value;
+        const userAgent = document.getElementById('userAgent').value;
+        const disallow = document.getElementById('disallow').value;
+        const allow = document.getElementById('allow').value;
+        const sitemap = document.getElementById('sitemap').value;
+
+        let robotsTxt = `User-agent: ${userAgent}\n`;
+        if (disallow) {
+            robotsTxt += `Disallow: ${disallow}\n`;
+        }
+        if (allow) {
+            robotsTxt += `Allow: ${allow}\n`;
+        }
+        if (sitemap) {
+            robotsTxt += `Sitemap: ${sitemap}\n`;
+        } else {
+            robotsTxt += `Sitemap: ${siteUrl}/sitemap.xml\n`;
+        }
+
+        document.getElementById('robotsOutput').value = robotsTxt;
+    }
+
+    function autoGenerate() {
+        const siteUrl = document.getElementById('siteUrl').value;
+        let robotsTxt = `User-agent: *\nDisallow: /search\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`;
+
+        document.getElementById('robotsOutput').value = robotsTxt;
+    }
+
+    function copyToClipboard() {
+        const textarea = document.getElementById('robotsOutput');
+        textarea.select();
+        document.execCommand('copy');
+        alert('تم النسخ إلى الحافظة!');
+    }
+</script>
+
+</body>
+</html>
